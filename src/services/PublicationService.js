@@ -1,0 +1,64 @@
+import api from "../http";
+
+export default class PublicationService {
+    static async getHistograms(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements) {
+        const data = this.buildHistogramRequest(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements);
+        
+        return api.post("/api/v1/objectsearch/histograms", data);
+    }
+
+    static async getPublicationsList(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements) {
+        const data = this.buildHistogramRequest(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements);
+
+        return api.post("/api/v1/objectsearch", data);
+    }
+
+    static async getDocuments(ids) {
+        console.log("getDocs");
+        return api.post("/api/v1/documents", { ids: ids });
+    }
+
+    static buildHistogramRequest(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements) {
+        return {
+            intervalType: "month",
+            
+            histogramTypes: [
+                "totalDocuments",
+                "riskFactors"
+            ],
+
+            issueDateInterval: {
+                startDate: startDate,
+                endDate: endDate
+            },
+
+            searchContext: {
+                targetSearchEntitiesContext: {
+                  targetSearchEntities: [
+                    {
+                      type: "company",
+                      inn: inn,
+                      maxFullness: checkMaxFullness,
+                      inBusinessNews: checkInBusinessNews
+                    }
+                  ],
+  
+                  onlyMainRole: checkOnlyMainRole,
+                  tonality: tonality,
+                  onlyWithRiskFactors: false
+                }
+            },
+            
+            similarMode: "duplicates",
+            limit: limit,
+            sortType: "sourceInfluence",
+            sortDirectionType: "desc",
+
+            attributeFilters: {
+                excludeTechNews: true,
+                excludeAnnouncements: checkExcludeAnnouncements,
+                excludeDigests: true
+            }
+        }
+    }
+}

@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage/MainPage";
+import AuthPage from "./pages/AuthPage/AuthPage";
+import ResultsPage from "./pages/ResultsPage/ResultsPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import { connect } from "react-redux";
+import mapStateToProps from "./storage/mapStateToProps";
+import mapDispatchToProps from "./storage/mapDispatchToProps";
+import InvalidPage from "./pages/InvalidPage/InvalidPage";
+import CheckTokenWithoutNavigate from "./components/CheckTokenWithoutNavigate";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App({ isAuth }) {
+    return (
+        <>
+            <CheckTokenWithoutNavigate />
+
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/*" element={<InvalidPage /> } />
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/auth" exact element={<AuthPage />} />
+                    <Route path="/results" exact element={isAuth ? <ResultsPage /> : <MainPage />} />
+                    <Route path="/search" exact element={<SearchPage />} />
+                </Routes>
+            </BrowserRouter>
+        </>
+    );
 }
 
-export default App;
+export default connect(mapStateToProps("App"), mapDispatchToProps("App"))(App);
