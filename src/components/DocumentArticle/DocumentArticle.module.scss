@@ -68,11 +68,11 @@
             margin-bottom: 100px;
             word-wrap: break-word;
 
-            scandoc {
+            //scandoc {
                 display: flex;
                 flex-direction: column;
                 
-                sentence {
+                //sentence {
                     order: 1;
 
                     font-weight: 400;
@@ -80,7 +80,7 @@
                     line-height: 19px;
                     letter-spacing: 0.02em;
                     color: $gray;
-                }
+                //}
 
                 img {
                     order: -1;
@@ -90,7 +90,7 @@
                     border-radius: 10px;
                     object-fit: cover;
                 }
-            }
+            //}
         }
 
         .footer {
@@ -98,10 +98,9 @@
             bottom: 10px;
 
             display: flex;
-            justify-content: space-between;
 
             .btn {
-                @include link_button;
+                @include link_button($azure);
 
                 width: 223px;
                 height: 46px;
@@ -129,6 +128,66 @@
                 opacity: 0.7;
 
                 transform: translateX(280px);
+            }
+        }
+    }
+
+    @include respond-to(laptop) {
+        margin: 0 auto;
+    }
+
+    @include respond-to(mobile) {
+        width: 335px;
+        min-width: 335px;
+        
+        h1 {
+            font-size: 19px;
+            line-height: 23px;
+            letter-spacing: 0.01em;
+
+            margin-top: 21px;
+        }
+
+        .document__wrapper {
+            margin: 19px 24px 25px;
+
+            .header {
+                .date, .sourceName {
+                    font-size: 14px;
+                    line-height: 17px;
+                    letter-spacing: 0.01em;
+                }
+            }
+
+            .category {
+                font-size: 10px;
+                letter-spacing: 0.01em;
+            }
+
+            .content {
+                font-size: 12px;
+                line-height: 15px;
+                letter-spacing: 0.01em;
+
+                margin-bottom: 80px;
+            }
+
+            .footer {
+                .btn {
+                    width: 195px;
+                    height: 40px;
+
+                    span {
+                        font-size: 14px;
+                        letter-spacing: 0.01em;
+                    }
+                }
+
+                .word_count {
+                    font-size: 14px;
+
+                    transform: translateX(30px);
+                }
             }
         }
     }

@@ -1,18 +1,21 @@
 import React from "react";
 import styles from "./DocumentArticle.module.scss";
 import { getNoun } from "../../validation";
-import HTMLReactParser from "html-react-parser";
+//import HTMLReactParser from "html-react-parser";
 import DOMPurify from "dompurify";
 
 export default function DocumentArticle({ data }) {
     //Ohhhhhhhhhhhhhh parsing
 
-    const markup = DOMPurify.sanitize(data.content.markup, { 
+    let markup = DOMPurify.sanitize(data.content.markup, { 
         USE_PROFILES: { html: true },
         ALLOWED_TAGS: []
     });
+    
+    if (markup.length > 1000)
+        markup = markup.substring(0, 1000) + "...";
 
-    console.log(markup);
+    //console.log(markup);
 
     return (
         <article className={styles.document}>

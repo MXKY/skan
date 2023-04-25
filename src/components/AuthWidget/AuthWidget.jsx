@@ -14,6 +14,7 @@ function AuthWidget({ setAuth }) {
     const navigate = useNavigate();
 
     const loginBtnRef = useRef();
+    const passwordInputRef = useRef();
 
     const [isLoginError, setIsLoginError] = useState(false);
     const [isPassError, setIsPassError] = useState(false);
@@ -51,6 +52,16 @@ function AuthWidget({ setAuth }) {
             });
     }
 
+    const onLoginKeyDown = (event) => {
+        if (event.code === "Enter")
+            passwordInputRef.current.focus();
+    }
+
+    const onPasswordKeyDown = (event) => {
+        if (event.code === "Enter")
+            onLoginClick();
+    }
+
     return (
         <article className={styles.parent}>
             <div className={styles.slide_buttons_container}>
@@ -60,11 +71,33 @@ function AuthWidget({ setAuth }) {
 
             <form className={styles.inputs_container}>
                 <span>Логин или номер телефона:</span>
-                <input id="login" className={isLoginError ? styles.input__error : ""} type="text" onChange={onLoginChange} pattern="[A-Za-zА-Яа-яЁё][0-9]{5,10}" maxLength={25} autoComplete="on" required />
+                <input 
+                    id="login" 
+                    className={isLoginError ? styles.input__error : ""} 
+                    type="text" 
+                    onChange={onLoginChange} 
+                    pattern="[A-Za-zА-Яа-яЁё][0-9]{5,10}" 
+                    maxLength={25} 
+                    autoComplete="on" 
+                    onKeyDown={onLoginKeyDown} 
+                    required 
+                    tabIndex={1}
+                />
                 {isLoginError && <span className={styles.error_label}>Введите корректные данные</span>}
 
                 <span>Пароль:</span>
-                <input id="password" className={isPassError ? styles.input__error : ""} type="password" onChange={onPasswordChange} maxLength={25} autoComplete="on" required />
+                <input 
+                    id="password" 
+                    className={isPassError ? styles.input__error : ""} 
+                    type="password" 
+                    onChange={onPasswordChange} 
+                    maxLength={25} 
+                    autoComplete="on" 
+                    ref={passwordInputRef} 
+                    onKeyDown={onPasswordKeyDown}
+                    required 
+                    tabIndex={2}
+                />
                 {isPassError && <span className={styles.error_label}>Неправильный пароль</span>}
             </form>
 

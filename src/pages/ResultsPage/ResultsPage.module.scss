@@ -6,6 +6,7 @@
     @include page-content-settings;
 
     position: relative;
+    overflow-x: hidden;
 
     h1 {
         margin: 15px 0 36px;
@@ -63,6 +64,7 @@
         .documents__wrapper {
             display: flex;
             flex-wrap: wrap;
+            column-gap: 10px;
             row-gap: 32px;
             justify-content: space-between;
         }
@@ -125,6 +127,18 @@
             .count {
                 letter-spacing: 0.01em;
             }
+        }
+
+        .documents {
+            h2 {
+                margin-bottom: 40px;
+            }
+        }
+    }
+
+    @include respond-to(mini-mobile) {
+        h2 {
+            text-align: center;
         }
     }
 }

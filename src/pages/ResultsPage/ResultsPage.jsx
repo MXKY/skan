@@ -18,6 +18,7 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
     const [remainingPublications, setRemainingPublications] = useState(publicationsList.length);
 
     const [loadedDocs, setLoadedDocs] = useState([]);
+    const [isError, setError] = useState(false);
 
     const onShowMoreBtnClick = () => {
         setRemainingPublications(remainingPublications - 10);
@@ -27,18 +28,17 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
 
     async function loadDocuments(indexOf, count = 10) {
         indexOf--;
-        count--;
 
         console.log(remainingPublications, indexOf, indexOf + count)
 
         await PublicationService.getDocuments(publicationsList.slice(indexOf, indexOf + count).map(x => x.encodedId))
             .then(response => {
-                console.log(JSON.stringify(response.data));
                 setLoadedDocs(loadedDocs.concat(response.data));
+                setError(false);
             })
             .catch(response => {
-                setLoadedDocs(null);
-                console.log(JSON.stringify(response.data));
+                setLoadedDocs(undefined);
+                setError(true);
             });
     }
 
@@ -46,6 +46,11 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
         if (histogramLoadedDate === null)
             navigate("/");
     }, [histogramLoadedDate, navigate]);
+
+    useEffect(() => {
+      if (publicationsList)
+        loadDocuments(1); // eslint-disable-next-line
+    }, [publicationsList]); 
 
     return (
         <>
@@ -78,7 +83,7 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
                     <ReportSlider />
                 </section>
 
-                {loadedDocs &&
+                {(loadedDocs && !isError) &&
                     <section className={styles.documents}>
                         <h2>
                             Список документов
@@ -94,6 +99,10 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
                             <button className={styles.show_more_button} onClick={onShowMoreBtnClick}>Показать больше</button>
                         }
                     </section>
+                }
+
+                {isError && 
+                  <h2>Ошибка поиска публикаций.</h2>
                 }
             </main>
 

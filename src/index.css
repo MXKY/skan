@@ -38,6 +38,10 @@ button, p, input, span, a {
   letter-spacing: inherit;
 }
 
+button:focus, span:focus, a:focus {
+  outline: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

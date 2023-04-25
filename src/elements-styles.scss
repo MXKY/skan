@@ -60,8 +60,8 @@
     }
 }
 
-@mixin link-button {
-    @include button;
+@mixin link-button($background-color: $blue) {
+    @include button($background-color);
 
     span {
         width: auto;
