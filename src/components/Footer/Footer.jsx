@@ -14,7 +14,7 @@ export default function Footer() {
                         +7 495 771 21 11 <br />
                         info@skan.ru
                     </p>
-                    <span>Copyright. {new Date().getFullYear()}</span>
+                    <span>Copyright Max Podgorniy. {new Date().getFullYear()}</span>
                 </div>
             </div>
         </div>
