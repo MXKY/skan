@@ -15,7 +15,7 @@ function App({ isAuth }) {
         <>
             <CheckTokenWithoutNavigate />
 
-            <BrowserRouter>
+            <BrowserRouter basemname={`/${process.env.PUBLIC_URL}`}>
                 <Routes>
                     <Route path="/*" element={<InvalidPage /> } />
                     <Route path="/" element={<MainPage />} />
