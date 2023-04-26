@@ -50,7 +50,9 @@ export default function DocumentArticle({ data }) {
             <div className={styles.document__wrapper}>
                 <div className={styles.header}>
                     <span className={styles.date}>{new Date(data.issueDate).toLocaleDateString().replace("/", ".")}</span>
-                    <span className={styles.sourceName}>{data.source.name}</span>
+                    <a href={data.url} target="_blank" rel="noreferrer">
+                        <span className={styles.sourceName}>{data.source.name}</span>
+                    </a>
                 </div>
 
                 <h1>
@@ -64,14 +66,22 @@ export default function DocumentArticle({ data }) {
                 }
 
                 {data.attributes.isAnnouncement &&
-                    <div className={styles.category__yellow}>
+                    <div className={styles.category__green}>
                         <span>Анонсы и события</span>
                     </div>
                 }
 
                 {data.attributes.isDigest &&
-                    <div className={styles.category__yellow}>
+                    <div className={styles.category__blue}>
                         <span>Сводки новостей</span>
+                    </div>
+                }
+
+                {(!data.attributes.isTechNews && 
+                  !data.attributes.isAnnouncement && 
+                  !data.attributes.isDigest) &&
+                    <div className={styles.category__gray}>
+                        <span>Без категории</span>
                     </div>
                 }
 

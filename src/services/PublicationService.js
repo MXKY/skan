@@ -3,18 +3,17 @@ import api from "../http";
 export default class PublicationService {
     static async getHistograms(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements) {
         const data = this.buildHistogramRequest(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements);
-        
+        console.log(data);
         return api.post("/api/v1/objectsearch/histograms", data);
     }
 
     static async getPublicationsList(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements) {
         const data = this.buildHistogramRequest(inn, tonality, limit, startDate, endDate, checkMaxFullness, checkInBusinessNews, checkOnlyMainRole, checkExcludeAnnouncements);
-
+        
         return api.post("/api/v1/objectsearch", data);
     }
 
     static async getDocuments(ids) {
-        console.log("getDocs");
         return api.post("/api/v1/documents", { ids: ids });
     }
 

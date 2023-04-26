@@ -56,6 +56,10 @@
             width: fit-content;
             height: 22px;
 
+            display: inline-block;
+            margin-right: 3px;
+            margin-bottom: 3px;
+
             span {
                 vertical-align: middle;
                 padding: 4px 11px;
@@ -66,6 +70,29 @@
             @extend %category;
 
             background: $yellow;
+        }
+
+        .category__gray {
+            @extend %category;
+
+            background: lightgray;
+            opacity: 0.8;
+        }
+
+        .category__green {
+            @extend %category;
+
+            background: $main;
+            color: $white;
+            opacity: 0.8;
+        }
+
+        .category__blue {
+            @extend %category;
+
+            background: $blue;
+            color: $white;
+            opacity: 0.8;
         }
 
         .content {
@@ -121,7 +148,7 @@
                 margin: 8px auto 10px;
             }
 
-            parsererror {
+            parsererror, path {
                 display: none;
             }
         }
@@ -190,11 +217,17 @@
                     line-height: 17px;
                     letter-spacing: 0.01em;
                 }
+
+                .date {
+                    margin-right: 9px;
+                }
             }
 
-            .category {
+            %category {
                 font-size: 10px;
+                line-height: 17px;
                 letter-spacing: 0.01em;
+                height: 20px;
             }
 
             .content {

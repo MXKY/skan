@@ -50,6 +50,7 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
 
         PublicationService.getDocuments(publicationsList.slice(indexOf, indexOf + count).map(x => x.encodedId))
             .then(response => {
+                console.log(response);
                 setLoadedDocs(loadedDocs.concat(response.data));
                 setError(false);
             })
@@ -117,17 +118,27 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
                             )}
                         </div>
 
-                        {remainingPublications > 0 &&
-                            <div className={styles.buttons}>
+                        <div className={styles.buttons}>
+                            {remainingPublications > 0 &&
                                 <button className={styles.show_more_button} ref={showMoreBtnRef} onClick={onShowMoreBtnClick}>Показать больше</button>
-                                <ArrowUpSVG className={styles.up_button} onClick={onUpBtnClick} />
-                            </div>
-                        }
+                            }
+                            <ArrowUpSVG className={remainingPublications > 0 ? styles.up_button : styles.up_button__only} onClick={onUpBtnClick} />
+                        </div>
                     </section>
                 }
 
                 {isError && 
-                  <h2>Ошибка поиска публикаций.</h2>
+                    <div className={styles.error}>
+                        <h2>
+                            Ошибка поиска публикаций.
+                        </h2>
+                        <h3>Возможно, публикаций, соответствуюших Вашему запросу, нет.</h3>
+                        <button className={styles.error_button}>
+                            <a href="/search">
+                                <span>К поиску</span>
+                            </a>
+                        </button>
+                    </div>
                 }
             </main>
 

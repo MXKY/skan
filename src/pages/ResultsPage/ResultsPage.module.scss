@@ -95,6 +95,28 @@
                     opacity: .3;
                 }
             }
+
+            .up_button__only {
+                @extend .up_button;
+
+                bottom: -85px;
+            }
+        }
+    }
+
+    .error {
+        display: flex;
+        flex-direction: column;
+
+        h2, h3 {
+            margin: 7px 0;
+        }
+
+        .error_button {
+            @include link-button;
+
+            width: 300px;
+            margin: 10px auto 50px;
         }
     }
 
@@ -162,6 +184,12 @@
         .documents {
             h2 {
                 margin-bottom: 40px;
+            }
+        }
+
+        .error {
+            .error_button {
+                width: 100%;
             }
         }
     }
