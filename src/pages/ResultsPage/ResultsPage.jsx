@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import CheckToken from "../../components/CheckToken";
+import { ReactComponent as ArrowUpSVG } from "../../assets/arrow up.svg";
 import { ReactComponent as Picture4SVG } from "../../assets/picture4.svg";
 import styles from "./ResultsPage.module.scss";
 import ReportSlider from "../../components/ReportSlider/ReportSlider";
@@ -14,31 +15,51 @@ import DocumentArticle from "../../components/DocumentArticle/DocumentArticle";
 
 function ResultsPage({ histogramLoadedDate, publicationsList }) {
     const navigate = useNavigate();
+    const showMoreBtnRef = useRef();
+    const top = useRef();
 
-    const [remainingPublications, setRemainingPublications] = useState(publicationsList.length);
+    const [remainingPublications, setRemainingPublications] = useState(0);
 
     const [loadedDocs, setLoadedDocs] = useState([]);
     const [isError, setError] = useState(false);
 
     const onShowMoreBtnClick = () => {
-        setRemainingPublications(remainingPublications - 10);
-
-        loadDocuments(publicationsList.length - remainingPublications + 1);
+        loadDocuments(publicationsList.length - remainingPublications + 1, 10, remainingPublications);
     }
 
-    async function loadDocuments(indexOf, count = 10) {
+    const onUpBtnClick = () => {
+        top.current.scrollIntoView();
+    }
+
+    function loadDocuments(indexOf, count = 10, remaining = 10) {
         indexOf--;
 
-        console.log(remainingPublications, indexOf, indexOf + count)
+        const newRemainingCount = remaining - count;
 
-        await PublicationService.getDocuments(publicationsList.slice(indexOf, indexOf + count).map(x => x.encodedId))
+        if (newRemainingCount > 0) {
+            setRemainingPublications(newRemainingCount);
+        } else {
+            count += newRemainingCount;
+            setRemainingPublications(0);
+        }
+
+        //console.log(indexOf, indexOf + count, remainingPublications);
+
+        if (showMoreBtnRef.current && remainingPublications === publicationsList.length)
+            showMoreBtnRef.current.disabled = true;
+
+        PublicationService.getDocuments(publicationsList.slice(indexOf, indexOf + count).map(x => x.encodedId))
             .then(response => {
                 setLoadedDocs(loadedDocs.concat(response.data));
                 setError(false);
             })
-            .catch(response => {
-                setLoadedDocs(undefined);
+            .catch(() => {
+                setLoadedDocs([]);
                 setError(true);
+            })
+            .finally(() => {
+                if (showMoreBtnRef.current)
+                    showMoreBtnRef.current.disabled = false;
             });
     }
 
@@ -48,8 +69,9 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
     }, [histogramLoadedDate, navigate]);
 
     useEffect(() => {
-      if (publicationsList)
-        loadDocuments(1); // eslint-disable-next-line
+        if (publicationsList) {
+            loadDocuments(1, 10, publicationsList.length); 
+        } // eslint-disable-next-line
     }, [publicationsList]); 
 
     return (
@@ -59,7 +81,7 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
             <Header />
 
             <main className={styles.content}>
-                <h1>
+                <h1 ref={top}>
                     Ищем. Скоро <br />
                     будут результаты
                 </h1>
@@ -77,13 +99,13 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
                     </h2>
                     
                     <div className={styles.count}>
-                        <span>Найдено <span>{publicationsList ? publicationsList?.length : "..."}</span> вариантов</span>
+                        <span>Найдено <span>{publicationsList?.length ? publicationsList.length : "..."}</span> вариантов</span>
                     </div>
 
                     <ReportSlider />
                 </section>
 
-                {(loadedDocs && !isError) &&
+                {(loadedDocs.length > 0 && !isError) &&
                     <section className={styles.documents}>
                         <h2>
                             Список документов
@@ -91,12 +113,15 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
 
                         <div className={styles.documents__wrapper}>
                             {loadedDocs.map(x => 
-                                <DocumentArticle data={x.ok} key={x.ok.issueDate} />
+                                <DocumentArticle data={x.ok} key={x.ok.id} />
                             )}
                         </div>
 
                         {remainingPublications > 0 &&
-                            <button className={styles.show_more_button} onClick={onShowMoreBtnClick}>Показать больше</button>
+                            <div className={styles.buttons}>
+                                <button className={styles.show_more_button} ref={showMoreBtnRef} onClick={onShowMoreBtnClick}>Показать больше</button>
+                                <ArrowUpSVG className={styles.up_button} onClick={onUpBtnClick} />
+                            </div>
                         }
                     </section>
                 }

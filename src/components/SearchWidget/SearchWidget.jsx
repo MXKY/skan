@@ -82,10 +82,11 @@ function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
         const inn = document.getElementById("innNumber").value;
         const tonality = selectedTonOption.value;
         const limit = docsCountRef.current.value;
-
+        
         searchBtnRef.current.disabled = true;
 
         setHistogramDate(undefined);
+        setPublicationsList(undefined);
 
         navigate("/results");
 
