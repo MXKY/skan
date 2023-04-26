@@ -29,10 +29,7 @@ function AuthWidget({ setAuth }) {
     }
 
     const validate = () => {
-        const login = document.getElementById("login").value;
-        const pass = document.getElementById("password").value;
-
-        setIsCompleted(!isLoginError && !isPassError && login && pass);
+        setIsCompleted(!isLoginError && !isPassError);
     }
     
     useEffect(validate);
