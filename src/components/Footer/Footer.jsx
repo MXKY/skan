@@ -8,6 +8,7 @@ export default function Footer() {
         <div className={styles.parent}>
             <div className={styles.footer_wrapper}>
                 <LogoSVG className={styles.logo} />
+                
                 <div className={styles.text}>
                     <p>
                         г. Москва, Цветной б-р, 40 <br />

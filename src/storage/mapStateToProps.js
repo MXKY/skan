@@ -21,7 +21,6 @@ function mapStateToProps(component) {
 
         case "Menu":
         case "AuthPage":
-        case "App":
         case "CheckToken": {
             return state => {
                 return {

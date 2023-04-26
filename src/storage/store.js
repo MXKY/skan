@@ -9,6 +9,6 @@ const store = configureStore(
         devTools: process.env.NODE_ENV !== 'production'
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-store.subscribe(() => console.info(store.getState()));
+//store.subscribe(() => console.info(store.getState()));
 
 export default store;

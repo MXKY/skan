@@ -43,8 +43,6 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
             setRemainingPublications(0);
         }
 
-        //console.log(indexOf, indexOf + count, remainingPublications);
-
         if (showMoreBtnRef.current && remainingPublications === publicationsList.length)
             showMoreBtnRef.current.disabled = true;
 

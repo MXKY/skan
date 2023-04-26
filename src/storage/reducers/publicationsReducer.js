@@ -34,7 +34,10 @@ export default function publicationsReducer(state = publicationsInitialState, ac
             }
 
         case ACTIONS.SET_PUBLICATIONS_LIST:
-            localStorage.setItem("publicationsList", JSON.stringify(action.list));
+            if (action.list === undefined)
+                localStorage.removeItem("publicationsList");
+            else
+                localStorage.setItem("publicationsList", JSON.stringify(action.list));
 
             return {
                 ...state,
