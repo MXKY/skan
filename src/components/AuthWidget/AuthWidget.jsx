@@ -16,31 +16,33 @@ function AuthWidget({ setAuth }) {
     const loginBtnRef = useRef();
     const passwordInputRef = useRef();
 
+    const [loginValue, setLoginValue] = useState("");
+    const [passValue, setPassValue] = useState("");
+
     const [isLoginError, setIsLoginError] = useState(false);
     const [isPassError, setIsPassError] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
 
-    const onLoginChange = (event) => setError(event);
-    const onPasswordChange = (event) => setError(event);
-
-    const setError = (event) => {
+    const onLoginChange = (event) => {
+        setLoginValue(event.target.value);
         setIsLoginError(!event.target.value);
+    };
+
+    const onPasswordChange = (event) => {
+        setPassValue(event.target.value);
         setIsPassError(!event.target.value);
-    }
+    };
 
     const validate = () => {
-        setIsCompleted(!isLoginError && !isPassError);
+        setIsCompleted(!isLoginError && !isPassError && loginValue && passValue);
     }
     
     useEffect(validate);
 
     async function onLoginClick() {
-        const login = document.getElementById("login").value;
-        const pass = document.getElementById("password").value;
-
         loginBtnRef.current.disabled = true;
 
-        await AccountService.login(login, pass)
+        await AccountService.login(loginValue, passValue)
             .then(response => {
                 setAuth(true);
                 localStorage.setItem("token", response.data.accessToken);
