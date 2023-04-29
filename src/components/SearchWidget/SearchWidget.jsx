@@ -6,12 +6,13 @@ import 'react-day-picker/dist/style.css';
 import DateRangeInputs from "./DateRangeInputs/DateRangeInputs";
 import { validateInn } from "../../validation";
 import PublicationService from "../../services/PublicationService";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setHistogram, setHistogramDate, setPublicationsList } from "../../storage/actions";
 
-function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
+export default function SearchWidget() {
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
     const tonOptions = [
@@ -85,8 +86,8 @@ function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
         
         searchBtnRef.current.disabled = true;
 
-        setHistogramDate(undefined);
-        setPublicationsList(undefined);
+        dispatch(setHistogramDate(undefined));
+        dispatch(setPublicationsList(undefined));
 
         navigate("/results");
 
@@ -94,7 +95,7 @@ function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
             selectedStartDate, selectedEndDate, checkMaxFullnessState, 
             checkInBusinessNewsState, checkOnlyMainRoleState, checkExcludeAnnouncementsState)
             .then(response => {
-                setHistogram(response);
+                dispatch(setHistogram(response));
             })
             .catch(response => {
                 console.log("Error. " + JSON.stringify(response));
@@ -104,7 +105,7 @@ function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
             selectedStartDate, selectedEndDate, checkMaxFullnessState, 
             checkInBusinessNewsState, checkOnlyMainRoleState, checkExcludeAnnouncementsState)
             .then(response => {
-                setPublicationsList(response.data.items);
+                dispatch(setPublicationsList(response.data.items));
             })
             .catch(response => {
                 console.log("Error. " + JSON.stringify(response))
@@ -216,5 +217,3 @@ function SearchWidget({ setHistogram, setHistogramDate, setPublicationsList }) {
         </section>
     );
 }
-
-export default connect(mapStateToProps("SearchWidget"), mapDispatchToProps("SearchWidget"))(SearchWidget);

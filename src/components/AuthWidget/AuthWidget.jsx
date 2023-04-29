@@ -4,13 +4,14 @@ import { ReactComponent as FacebookSVG } from "../../assets/facebook.svg";
 import { ReactComponent as YandexSVG } from "../../assets/yandex.svg";
 import { ReactComponent as LockSVG } from "../../assets/lock.svg";
 import styles from "./AuthWidget.module.scss";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
+import { useDispatch } from "react-redux";
 import AccountService from "../../services/AccountService";
 import { useNavigate } from "react-router-dom";
+import { setAuth } from "../../storage/actions";
 
-function AuthWidget({ setAuth }) {
+export default function AuthWidget() {
+    const dispatch = useDispatch();
+    
     const navigate = useNavigate();
 
     const loginBtnRef = useRef();
@@ -44,7 +45,7 @@ function AuthWidget({ setAuth }) {
 
         await AccountService.login(loginValue, passValue)
             .then(response => {
-                setAuth(true);
+                dispatch(setAuth(true));
                 localStorage.setItem("token", response.data.accessToken);
                 localStorage.setItem("expire", response.data.expire);
                 navigate("/");
@@ -120,5 +121,3 @@ function AuthWidget({ setAuth }) {
         </article>
     );
 }
-
-export default connect(mapStateToProps("AuthWidget"), mapDispatchToProps("AuthWidget"))(AuthWidget);

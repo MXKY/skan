@@ -6,12 +6,9 @@ import { ReactComponent as FoldersSVG } from "../../assets/folders.svg";
 import { ReactComponent as PictureSVG } from "../../assets/picture3.svg";
 import styles from "./SearchPage.module.scss";
 import SearchWidget from "../../components/SearchWidget/SearchWidget";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
 import CheckToken from "../../components/CheckToken";
 
-function SearchPage() {
+export default function SearchPage() {
     return (
         <>
             <CheckToken unauthRedirect="/" />
@@ -37,5 +34,3 @@ function SearchPage() {
         </>
     );
 }
-
-export default connect(mapStateToProps("SearchPage"), mapDispatchToProps("SearchPage"))(SearchPage);

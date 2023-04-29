@@ -1,12 +1,11 @@
-import { connect } from "react-redux";
-import mapStateToProps from "../storage/mapStateToProps";
-import mapDispatchToProps from "../storage/mapDispatchToProps";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../storage/actions";
 
-function CheckTokenWithoutNavigate({ setAuth }) {
+export default function CheckTokenWithoutNavigate() {
+    const dispatch = useDispatch();
+
     const now = new Date();
     const expire = new Date(localStorage.getItem("expire"));
 
-    setAuth(now < expire);
+    dispatch(setAuth(now < expire));
 }
-
-export default connect(mapStateToProps("CheckToken"), mapDispatchToProps("CheckToken"))(CheckTokenWithoutNavigate);

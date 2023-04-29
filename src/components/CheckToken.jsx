@@ -1,10 +1,12 @@
-import { connect } from "react-redux";
-import mapStateToProps from "../storage/mapStateToProps";
-import mapDispatchToProps from "../storage/mapDispatchToProps";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { setAuth } from "../storage/actions";
 
-function CheckToken({ unauthRedirect, isAuth, setAuth }) {
+export default function CheckToken({ unauthRedirect }) {
+    const isAuth = useSelector(state => state.account.isAuth);
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +20,7 @@ function CheckToken({ unauthRedirect, isAuth, setAuth }) {
             const now = new Date();
             const expire = new Date(localStorage.getItem("expire"));
     
-            setAuth(now < expire);
+            dispatch(setAuth(now < expire));
     
             if (!isAuth)
                 navigate(unauthRedirect);
@@ -27,7 +29,5 @@ function CheckToken({ unauthRedirect, isAuth, setAuth }) {
         return () => {
             clearInterval(itervalId);
         }
-    }, [unauthRedirect, isAuth, setAuth, navigate]);
+    }, [unauthRedirect, isAuth, dispatch, navigate]);
 }
-
-export default connect(mapStateToProps("CheckToken"), mapDispatchToProps("CheckToken"))(CheckToken);

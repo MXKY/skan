@@ -4,11 +4,12 @@ import { ReactComponent as ArrowActiveSVG } from "../../assets/arrow active.svg"
 import { ReactComponent as SpinnerSVG } from "../../assets/spinner.svg";
 import Slider from "react-slick";
 import styles from "./ReportSlider.module.scss";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-function ReportSlider({ histogram, histogramLoadedDate }) {
+export default function ReportSlider() {
+    const histogram = useSelector(state => state.publications.histogram);
+    const histogramLoadedDate = useSelector(state => state.publications.histogramLoadedDate);
+
     const PrevArrow = ({ currentSlide, slideCount, ...props }) => 
         <button {...props}>
             {(currentSlide === 0 &&
@@ -78,5 +79,3 @@ function ReportSlider({ histogram, histogramLoadedDate }) {
         </div>
     );
 }
-
-export default connect(mapStateToProps("ReportSlider"), mapDispatchToProps("ReportSlider"))(ReportSlider);

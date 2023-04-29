@@ -6,15 +6,17 @@ import { ReactComponent as ArrowUpSVG } from "../../assets/arrow up.svg";
 import { ReactComponent as Picture4SVG } from "../../assets/picture4.svg";
 import styles from "./ResultsPage.module.scss";
 import ReportSlider from "../../components/ReportSlider/ReportSlider";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PublicationService from "../../services/PublicationService";
 import DocumentArticle from "../../components/DocumentArticle/DocumentArticle";
 
-function ResultsPage({ histogramLoadedDate, publicationsList }) {
+export default function ResultsPage() {
+    const histogramLoadedDate = useSelector(state => state.publications.histogramLoadedDate);
+    const publicationsList = useSelector(state => state.publications.publicationsList);
+
     const navigate = useNavigate();
+
     const showMoreBtnRef = useRef();
     const top = useRef();
 
@@ -144,5 +146,3 @@ function ResultsPage({ histogramLoadedDate, publicationsList }) {
         </>
     );
 }
-
-export default connect(mapStateToProps("ResultsPage"), mapDispatchToProps("ResultsPage"))(ResultsPage);

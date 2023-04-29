@@ -3,18 +3,23 @@ import { Link } from "react-router-dom";
 import { ReactComponent as AvatarSVG } from "../../assets/avatar.svg";
 import { ReactComponent as SpinnerSVG } from "../../assets/spinner.svg";
 import styles from "./ProfileWidget.module.scss";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
+import { useDispatch, useSelector } from "react-redux";
 import AccountService from "../../services/AccountService";
+import { setAccountInfo, setAuth } from "../../storage/actions";
 
-function ProfileWidget({ isAuth, usedCompanyCount, companyLimit, setAuth, setAccountInfo }) {
+export default function ProfileWidget() {
+    const isAuth = useSelector(state => state.account.isAuth);
+    const usedCompanyCount = useSelector(state => state.account.usedCompanyCount);
+    const companyLimit = useSelector(state => state.account.companyLimit);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (isAuth && usedCompanyCount === undefined)
             AccountService.getInfo()
                 .then(response => {
                     const data = response.data.eventFiltersInfo;
-                    setAccountInfo(data.usedCompanyCount, data.companyLimit);
+                    dispatch(setAccountInfo(data.usedCompanyCount, data.companyLimit));
                 });
     });
 
@@ -43,7 +48,7 @@ function ProfileWidget({ isAuth, usedCompanyCount, companyLimit, setAuth, setAcc
                     <div className={styles.avatar__wrapper}>
                         <div className={styles.username__wrapper}>
                             <span className={styles.username}>Максим Е.</span>
-                            <button className={styles.exit_button} onClick={() => setAuth(false)}>Выйти</button>
+                            <button className={styles.exit_button} onClick={() => dispatch(setAuth(false))}>Выйти</button>
                         </div>
 
                         <AvatarSVG className={styles.avatar} />
@@ -58,5 +63,3 @@ function ProfileWidget({ isAuth, usedCompanyCount, companyLimit, setAuth, setAcc
         </>
     );
 }
-
-export default connect(mapStateToProps("ProfileWidget"), mapDispatchToProps("ProfileWidget"))(ProfileWidget);

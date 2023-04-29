@@ -2,11 +2,13 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as AvatarSVG } from "../../assets/avatar.svg";
 import styles from "./Menu.module.scss";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "../../storage/actions";
 
-function Menu({ onBtnClick, isAuth, setAuth }) {
+export default function Menu({ onBtnClick }) {
+    const isAuth = useSelector(state => state.account.isAuth);
+    const dispatch = useDispatch();
+
     return (
         <div className={styles.parent}>
             <div className={styles.nav}>
@@ -19,7 +21,7 @@ function Menu({ onBtnClick, isAuth, setAuth }) {
                 <div className={styles.avatar__wrapper}>
                     <AvatarSVG className={styles.avatar} />
                     <span className={styles.username}>Максим Евгеньевич</span>
-                    <button className={styles.exit_button} onClick={() => setAuth(false)}>Выйти</button>
+                    <button className={styles.exit_button} onClick={() => dispatch(setAuth(false))}>Выйти</button>
                 </div>)
                 ||
                 <div className={styles.buttons_wrapper}>
@@ -30,5 +32,3 @@ function Menu({ onBtnClick, isAuth, setAuth }) {
         </div>
     );
 }
-
-export default connect(mapStateToProps("Menu"), mapDispatchToProps("Menu"))(Menu);

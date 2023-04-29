@@ -4,12 +4,12 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { ReactComponent as Picture } from "../../assets/key carriers.svg";
 import styles from "./AuthPage.module.scss";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
-import mapDispatchToProps from "../../storage/mapDispatchToProps";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function AuthPage({ isAuth }) {
+export default function AuthPage() {
+    const isAuth = useSelector(state => state.account.isAuth);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,4 +36,3 @@ function AuthPage({ isAuth }) {
     );
 }
 
-export default connect(mapStateToProps("AuthPage"), mapDispatchToProps("AuthPage"))(AuthPage);

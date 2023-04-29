@@ -9,12 +9,14 @@ import { ReactComponent as LaptopSVG } from "../../assets/laptop.svg";
 import styles from "./MainPage.module.scss";
 import InfoSlider from "../../components/InfoSlider/InfoSlider";
 import TariffWidget from "../../components/TariffWidget/TariffWidget";
-import { connect } from "react-redux";
-import mapStateToProps from "../../storage/mapStateToProps";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckToken from "../../components/CheckToken";
 
-function MainPage({ isAuth, currentTariff }) {
+export default function MainPage() {
+    const isAuth = useSelector(state => state.account.isAuth);
+    const currentTariff = useSelector(state => state.account.tariff);
+
     return (
         <>
             <CheckToken unauthRedirect="/" />
@@ -116,5 +118,3 @@ function MainPage({ isAuth, currentTariff }) {
         </>
     );
 }
-
-export default connect(mapStateToProps("MainPage"))(MainPage);
